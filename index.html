@@ -1,103 +1,128 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>Picasso Round Table - 質問カード</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Picasso Round Table</title>
   <style>
     body {
-      font-family: 'Helvetica Neue', sans-serif;
-      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      font-family: "Helvetica Neue", sans-serif;
+      background: linear-gradient(135deg, #f9f9f9, #e0ebf5);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
+      font-size: 28px;
       color: #2c3e50;
     }
 
-    .tagline {
-      font-size: 1em;
-      color: #555;
-      margin-bottom: 40px;
+    #loading {
+      display: none;
+      font-size: 18px;
+      color: #777;
+      margin-top: 20px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.3; }
+    }
+
+    #questionBox {
+      opacity: 0;
+      transform: scale(0.8) rotateY(0deg);
+      font-size: 22px;
+      text-align: center;
+      padding: 20px 30px;
+      margin: 30px;
+      border: 2px solid #3498db;
+      border-radius: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.8s ease;
+      max-width: 80%;
+    }
+
+    #questionBox.show {
+      opacity: 1;
+      transform: scale(1.1) rotateY(360deg);
     }
 
     button {
-      padding: 15px 30px;
+      padding: 12px 24px;
       font-size: 18px;
-      background-color: #ff6f61;
+      background-color: #3498db;
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: #ff3b2e;
-    }
-
-    #question {
-      margin-top: 30px;
-      font-size: 1.8em;
-      color: #2c3e50;
-      max-width: 600px;
-      text-align: center;
-      line-height: 1.4;
-      min-height: 80px;
+      background-color: #2980b9;
     }
 
     footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.8em;
-      color: #999;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
-
   <h1>🎨 Picasso Round Table</h1>
-  <div class="tagline">AI × 対話の力でつながる</div>
 
-  <button onclick="showRandomQuestion()">次の質問を表示</button>
+  <div id="loading">質問を選んでいます…</div>
+  <div id="questionBox"></div>
 
-  <div id="question">ここに質問が表示されます</div>
+  <button onclick="showQuestion()">次の質問を表示</button>
 
-  <footer>Powered by AI × ファシリテーション</footer>
+  <footer>© 2025 Picasso Project</footer>
 
   <script>
-    const allQuestions = [
-      "最近、ちょっと嬉しかったことは？",
-      "困ったときに助けてもらった経験は？",
-      "今チャレンジしていることは何？",
-      "チームの強みは何だと思いますか？",
-      "これから社長に期待することは？",
-      "生成AIを使ってみたい場面は？",
-      "他部門と連携してうまくいったことは？",
-      "最近、自分が成長したと感じた瞬間は？"
+    const questions = [
+      "最近しんどかったことは？",
+      "一番やりがいを感じたことは？",
+      "他部門との連携でよかったことは？",
+      "今後やってみたい仕事は？",
+      "社長に聞いてみたいことは？",
+      "AIを業務で使うとしたら？"
     ];
 
-    let remainingQuestions = [...allQuestions];
+    let usedIndexes = [];
 
-    function showRandomQuestion() {
-      if (remainingQuestions.length === 0) {
-        document.getElementById("question").innerText = "すべての質問が表示されました！";
-        return;
-      }
+    function showQuestion() {
+      const questionBox = document.getElementById("questionBox");
+      const loading = document.getElementById("loading");
 
-      const index = Math.floor(Math.random() * remainingQuestions.length);
-      const selected = remainingQuestions.splice(index, 1)[0];
+      questionBox.classList.remove("show");
+      questionBox.innerText = "";
+      loading.style.display = "block";
 
-      document.getElementById("question").innerText = selected;
+      setTimeout(() => {
+        loading.style.display = "none";
+
+        if (usedIndexes.length === questions.length) {
+          alert("すべての質問を表示しました！");
+          return;
+        }
+
+        let index;
+        do {
+          index = Math.floor(Math.random() * questions.length);
+        } while (usedIndexes.includes(index));
+
+        usedIndexes.push(index);
+        questionBox.innerText = questions[index];
+        questionBox.classList.add("show");
+      }, 1000);
     }
   </script>
-
 </body>
 </html>
