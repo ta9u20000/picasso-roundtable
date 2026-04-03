@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Picasso Round Table - 質問カード</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .tagline {
+      font-size: 1em;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #ff6f61;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff3b2e;
+    }
+
+    #question {
+      margin-top: 30px;
+      font-size: 1.8em;
+      color: #2c3e50;
+      max-width: 600px;
+      text-align: center;
+      line-height: 1.4;
+      min-height: 80px;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.8em;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎨 Picasso Round Table</h1>
+  <div class="tagline">AI × 対話の力でつながる</div>
+
+  <button onclick="showRandomQuestion()">次の質問を表示</button>
+
+  <div id="question">ここに質問が表示されます</div>
+
+  <footer>Powered by AI × ファシリテーション</footer>
+
+  <script>
+    const allQuestions = [
+      "最近、ちょっと嬉しかったことは？",
+      "困ったときに助けてもらった経験は？",
+      "今チャレンジしていることは何？",
+      "チームの強みは何だと思いますか？",
+      "これから社長に期待することは？",
+      "生成AIを使ってみたい場面は？",
+      "他部門と連携してうまくいったことは？",
+      "最近、自分が成長したと感じた瞬間は？",
+      "好きな果物を教えてください（津田）"
+    ];
+
+    let remainingQuestions = [...allQuestions];
+
+    function showRandomQuestion() {
+      if (remainingQuestions.length === 0) {
+        document.getElementById("question").innerText = "すべての質問が表示されました！";
+        return;
+      }
+
+      const index = Math.floor(Math.random() * remainingQuestions.length);
+      const selected = remainingQuestions.splice(index, 1)[0];
+
+      document.getElementById("question").innerText = selected;
+    }
+  </script>
+
+</body>
+</html>
