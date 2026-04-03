@@ -43,7 +43,21 @@
       background-color: #ff3b2e;
     }
 
+    #loading {
+      display: none;
+      font-size: 18px;
+      color: #777;
+      margin-top: 20px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.3; }
+    }
+
     #question {
+      opacity: 0;
+      transform: scale(0.8) rotateY(0deg);
       margin-top: 30px;
       font-size: 1.8em;
       color: #2c3e50;
@@ -51,6 +65,17 @@
       text-align: center;
       line-height: 1.4;
       min-height: 80px;
+      padding: 20px 30px;
+      border: 2px solid #ff6f61;
+      border-radius: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.8s ease;
+    }
+
+    #question.show {
+      opacity: 1;
+      transform: scale(1.1) rotateY(360deg);
     }
 
     footer {
@@ -68,7 +93,8 @@
 
   <button onclick="showRandomQuestion()">次の質問を表示</button>
 
-  <div id="question">ここに質問が表示されます</div>
+  <div id="loading">質問を選んでいます…</div>
+  <div id="question"></div>
 
   <footer>Powered by AI × ファシリテーション</footer>
 
@@ -88,15 +114,29 @@
     let remainingQuestions = [...allQuestions];
 
     function showRandomQuestion() {
-      if (remainingQuestions.length === 0) {
-        document.getElementById("question").innerText = "すべての質問が表示されました！";
-        return;
-      }
+      const questionBox = document.getElementById("question");
+      const loading = document.getElementById("loading");
 
-      const index = Math.floor(Math.random() * remainingQuestions.length);
-      const selected = remainingQuestions.splice(index, 1)[0];
+      // アニメーションをリセット
+      questionBox.classList.remove("show");
+      questionBox.innerText = "";
+      loading.style.display = "block";
 
-      document.getElementById("question").innerText = selected;
+      setTimeout(() => {
+        loading.style.display = "none";
+
+        if (remainingQuestions.length === 0) {
+          questionBox.innerText = "すべての質問が表示されました！";
+          questionBox.classList.add("show");
+          return;
+        }
+
+        const index = Math.floor(Math.random() * remainingQuestions.length);
+        const selected = remainingQuestions.splice(index, 1)[0];
+
+        questionBox.innerText = selected;
+        questionBox.classList.add("show");
+      }, 1000);
     }
   </script>
 
